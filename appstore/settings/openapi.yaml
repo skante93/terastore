@@ -1,0 +1,3632 @@
+openapi: 3.0.0
+
+info:
+  version: "1.3.1"
+  title: IDS Metadata Broker API
+  description: This is the reference API description for IDS Metadata Broker HTTP Calls. Note that this is, in general, not a REST API.
+  contact:
+    email: contact@ids.fraunhofer.de
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    
+# servers:
+# - url: https://{authority}/{basePath}
+#   description: The IDS Metadata Broker can be deployed in any domain. As usualy the broker is not the only resource served by one domain, either subdomains (e.g. 'broker.ids.isst.fraunhofer.de') or paths ('example.org/path/to/the/broker/') need to be specified. This API description treats the trailing slash ('/') as the root location of its paths.
+#   variables:
+#     authority:
+#       default: broker.ids.isst.fraunhofer.de
+#       description: The authority of the server URL containing the domain name and port.
+#     basePath:
+#       default: ' '
+#       description: The base path at the server to the Broker endpoint.
+# - description: Example URL
+#   url: https://example.com/ids/broker/
+
+
+tags:
+  - name: Human User
+    description: Enpoints for human users interacting with the IDS AppStore through a Web Browser
+  - name: Multipart Interactions
+    description: The HTTP Multipart Interactions, using IDS Messages in the Mutlipart Header and the optional related content in the Multipart Payload.
+  - name: AppStore 
+    description: The REST endpoint of the IDS AppStore
+  - name: IDS Example Responses
+    description: Example of responses that would be issued for a certain ID messages 
+
+
+paths:
+  /browse:
+    get:
+      tags:
+        - Human User
+      summary: AppStore's GUI that can allow you to rbowse through the catalog.
+      responses:
+        '200':
+          description: The Web UI as an HTML document. Might require a further login.
+          content:
+            'text/html':
+              schema:
+                type: string
+  /api/apps:
+    get:
+      tags:
+        - AppStore
+      summary: TODO
+      description: TODO
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  schema:
+                    $ref: '#/components/schemas/AppMetadata'
+
+    post:
+      tags:
+        - AppStore
+      summary: TODO
+      description: TODO
+      requestBody:
+        description: TODO body description
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/AppMetadata'
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/AppMetadata'
+  
+  /api/apps/search:
+    get:
+      tags:
+        - AppStore
+      summary: todo
+      description: todo
+      parameters:
+        - name: q
+          in: query
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  schema:
+                    $ref: '#/components/schemas/AppMetadata'
+  
+  /api/apps/{appID}/metadata:
+    get:  
+      tags:
+        - AppStore
+      summary: todo
+      description: todo
+      parameters:
+        - name: appID
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/AppMetadata'
+    put:  
+      tags:
+        - AppStore
+      summary: todo
+      description: todo
+      parameters:
+        - name: appID
+          in: path
+          required: true
+          type: string
+      requestBody:
+        description: TODO body description
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/AppMetadata'
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/AppMetadata'
+        
+  /api/apps/{appID}/artifact:
+    get:  
+      tags:
+        - AppStore
+      summary: todo
+      description: todo
+      parameters:
+        - name: appID
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/AppArtifact'
+    put:  
+      tags:
+        - AppStore
+      summary: todo
+      description: todo
+      parameters:
+        - name: appID
+          in: path
+          required: true
+          type: string
+      requestBody:
+        description: TODO body description
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/AppArtifact'
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/AppArtifact'
+  
+  # /infrastructure:
+  #   post:
+  #     tags:
+  #       - Multipart Interactions
+  #     summary: todo
+  #     description: TODO
+
+
+  # /:
+  #   get:
+  #     tags: 
+  #     - Human User
+  #     - Broker
+  #     summary: Metadata Broker's Self-Description
+  #     description: Request the Metadata Broker's Self-Description in JSON-LD.
+  #     parameters:
+  #       - in: header
+  #         name: ids-modelVersion
+  #         required: false
+  #         description: "Information Model version, against which the Message should be interpreted"
+  #         schema: 
+  #           $ref: '#/components/schemas/infomodelVersion'
+  #       - in: header
+  #         name: ids-issued
+  #         required: false
+  #         description: "Date of issuing the request."
+  #         schema:
+  #           $ref: '#/components/schemas/dateTimeStampValue'
+  #       - in: header
+  #         name: ids-correlationMessage
+  #         required: false
+  #         description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-related-message"
+  #       - in: header
+  #         name: ids-issuerConnector
+  #         required: false
+  #         description: "Origin Connector of the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-sending-connector/"
+  #       - in: header
+  #         name: ids-recipientConnector
+  #         required: false
+  #         description: "Target Connector, mainly used in broadcasting scenarios."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-target-connector/"
+  #       - in: header
+  #         name: ids-senderAgent
+  #         required: false
+  #         description: "foaf:Agent, which initiated the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-recipientAgent
+  #         required: false
+  #         description: "foaf:Agent, for which the message is intended."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-securityToken
+  #         required: true
+  #         description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #         schema: 
+  #           type: string
+  #         example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #       - in: header
+  #         name: ids-authorizationToken
+  #         required: false
+  #         description: "Authorization token as required by the target connector."
+  #         schema: 
+  #           type: string
+  #       - in: header
+  #         name: ids-transferContract
+  #         required: false
+  #         description: "Contract which is (or will be) the legal basis of the data transfer."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-suitable-contract/"
+  #       - in: header
+  #         name: ids-contentVersion
+  #         required: false
+  #         description: "Version of the content in the payload."
+  #         schema: 
+  #           type: string
+  #         example: "1.0.5"
+        
+  #     responses:
+  #       '200':
+  #         description: The Self-Description of this IDS Metadata Broker in JSON-LD.
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+  #         content:
+  #           'application/json':
+  #             schema: 
+  #               $ref: "#/components/schemas/BrokerJsonLd"
+              
+  #           'application/ld+json':
+  #             schema: 
+  #               $ref: "#/components/schemas/BrokerJsonLd"
+  #       '403':
+  #         description: Forbidden. Check your DAT in the 'ids-securityToken' Header.
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+    
+  #   head:
+  #     tags: 
+  #     - Broker
+  #     summary: Metadata Broker's Header
+  #     description: "Request the Metadata Broker's Header information."
+  #     parameters:
+  #       - in: header
+  #         name: ids-modelVersion
+  #         required: false
+  #         description: "Information Model version, against which the Message should be interpreted"
+  #         schema: 
+  #           $ref: '#/components/schemas/infomodelVersion'
+  #       - in: header
+  #         name: ids-issued
+  #         required: false
+  #         description: "Date of issuing the request."
+  #         schema:
+  #           $ref: '#/components/schemas/dateTimeStampValue'
+  #       - in: header
+  #         name: ids-correlationMessage
+  #         required: false
+  #         description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-related-message"
+  #       - in: header
+  #         name: ids-issuerConnector
+  #         required: false
+  #         description: "Origin Connector of the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-sending-connector/"
+  #       - in: header
+  #         name: ids-recipientConnector
+  #         required: false
+  #         description: "Target Connector, mainly used in broadcasting scenarios."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-target-connector/"
+  #       - in: header
+  #         name: ids-senderAgent
+  #         required: false
+  #         description: "foaf:Agent, which initiated the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-recipientAgent
+  #         required: false
+  #         description: "foaf:Agent, for which the message is intended."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-securityToken
+  #         required: true
+  #         description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #         schema: 
+  #           type: string
+  #         example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #       - in: header
+  #         name: ids-authorizationToken
+  #         required: false
+  #         description: "Authorization token as required by the target connector."
+  #         schema: 
+  #           type: string
+  #       - in: header
+  #         name: ids-transferContract
+  #         required: false
+  #         description: "Contract which is (or will be) the legal basis of the data transfer."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-suitable-contract/"
+  #       - in: header
+  #         name: ids-contentVersion
+  #         required: false
+  #         description: "Version of the content in the payload."
+  #         schema: 
+  #           type: string
+  #         example: "1.0.5"
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS"
+
+  #       '401':
+  #         description: Unauthorized. Check your DAT in the 'ids-securityToken' Header.
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS"
+    
+    
+  #   options:
+  #     tags: 
+  #     - Broker
+  #     summary: Metadata Broker's allowed operations 
+  #     description: Request the HTTP operations allowed on this IDS Metadata Broker.
+  #     parameters:
+  #       - in: header
+  #         name: ids-modelVersion
+  #         required: false
+  #         description: "Information Model version, against which the Message should be interpreted"
+  #         schema: 
+  #           $ref: '#/components/schemas/infomodelVersion'
+  #       - in: header
+  #         name: ids-issued
+  #         required: false
+  #         description: "Date of issuing the request."
+  #         schema:
+  #           $ref: '#/components/schemas/dateTimeStampValue'
+  #       - in: header
+  #         name: ids-correlationMessage
+  #         required: false
+  #         description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-related-message"
+  #       - in: header
+  #         name: ids-issuerConnector
+  #         required: false
+  #         description: "Origin Connector of the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-sending-connector/"
+  #       - in: header
+  #         name: ids-recipientConnector
+  #         required: false
+  #         description: "Target Connector, mainly used in broadcasting scenarios."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-target-connector/"
+  #       - in: header
+  #         name: ids-senderAgent
+  #         required: false
+  #         description: "foaf:Agent, which initiated the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-recipientAgent
+  #         required: false
+  #         description: "foaf:Agent, for which the message is intended."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-securityToken
+  #         required: true
+  #         description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #         schema: 
+  #           type: string
+  #         example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #       - in: header
+  #         name: ids-authorizationToken
+  #         required: false
+  #         description: "Authorization token as required by the target connector."
+  #         schema: 
+  #           type: string
+  #       - in: header
+  #         name: ids-transferContract
+  #         required: false
+  #         description: "Contract which is (or will be) the legal basis of the data transfer."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-suitable-contract/"
+  #       - in: header
+  #         name: ids-contentVersion
+  #         required: false
+  #         description: "Version of the content in the payload."
+  #         schema: 
+  #           type: string
+  #         example: "1.0.5"      
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS"
+
+  #       '403':
+  #         description: Forbidden. Check your DAT in the 'ids-securityToken' Header.
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS"
+  
+
+  /infrastructure:
+    post:
+      summary: Infrastructure related IDS Multipart Message endpoint.
+      tags: 
+      - Multipart Interactions
+      description: This endpoint serves as the main interaction point for onboarding and updating of metadata at the broker. Most probably the relevant messages are ConnectorAvailableMessage, ConnectorUnavailableMessage, ConnectorInactiveMessage, ConnectorUpdateMessage, ResourceAvailableMessage, ResourceUnavailableMessage, ResourceUpdateMessage.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                header:
+                  description: "The Multipart Header section contains the IDS Message isntance."
+                  type: object
+                  properties:
+                    '@context':
+                      type: string
+                      example: 'https://w3id.org/idsa/contexts/context.jsonld'
+                    '@type':
+                      type: string
+                      example: 'ids:ConnectorAvailableMessage'
+                    '@id':
+                      type: string
+                      example: 'http://industrialdataspace.org/connectorAvailableMessage/34d761cf-5ca4-4a77-a7f4-b14d8f75636a'
+                    modelVersion:
+                      $ref: '#/components/schemas/infomodelVersion'
+                    issued:
+                      $ref: '#/components/schemas/dateTimeStamp'
+                    issuerConnector:
+                      $ref: '#/components/schemas/URI'
+                    securityToken:
+                      type: object
+                      properties:
+                        '@type': 
+                          type: string
+                          example: 'ids:DynamicAttributeToken'
+                        tokenValue:
+                          type: string
+                          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJAY29udGV4dCI6Imh0dHBzOi8vdzNpZC5vcmcvaWRzYS9jb250ZXh0cy9jb250ZXh0Lmpzb25sZCIsImlkczpyZWZlcnJpbmdDb25uZWN0b3IiOnsiaWRzOnNlY3VyaXR5UHJvZmlsZSI6Imlkc2M6QkFTRV9TRUNVUklUWV9QUk9GSUxFIiwiaWRzOmV4dGVuZGVkR3VhcmFudGVlIjoiaWRzYzpVU0FHRV9DT05UUk9MX1BPTElDWV9FTkZPUkNFTUVOVCIsIkBpZCI6Imh0dHA6Ly9zb21lLWNvbm5lY3Rvci11cmkuY29tIiwiaWRzOnRyYW5zcG9ydENlcnRzU2hhMjU2IjpbImJhY2I4Nzk1NzU3MzBiYjA4M2YyODNmZDViNjdhOGNiODk2OTQ0ZDFiZTI4YzdiMzIxMTdjZmM3NTdjODFlOTYiXX0sInNjb3BlIjoiaWRzX2Nvbm5lY3Rvcl9hdHRyaWJ1dGVzIiwiYXVkIjoiaWRzX2Nvbm5lY3RvcnNfYWxsIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiJDPURFLE89RnJhdW5ob2ZlcixPVT1BSVNFQyxDTj1lZGM1ZDdiMy1hMzk4LTQ4ZjAtYWJiMC0zNzUxNTMwYzRmZWQiLCJuYmYiOjE1Njc3MDM1NjQsImV4cCI6MTU2NzcwNzE2NH0.hcJmxUC9gNkXevsLpOYHgRNstOLn_tyAAhv-2_CGr8g' 
+                        tokenFormat:
+                          type: object
+                          properties:
+                            '@id':
+                              type: string
+                              example: 'idsc:JWT'
+                payload:
+                  type: object
+                  description: The Payload corresponding to the IDS Message defined in the Multipart Header section. Can be an IDS Object in RDF (JSON-LD), a query (e.g. SPARQL) or any other suitable data format.
+                  properties:
+                    '@context':
+                      type: string
+                      example: 'https://w3id.org/idsa/contexts/context.jsonld'
+                    '@type': 
+                      type: string
+                      example: 'ids:BaseConnector'
+                    '@id':
+                      type: string
+                      example: 'https://companyA.com/connector/59a68243-dd96-4c8d-88a9-0f0e03e13b1b'
+                    'defaultHost' : 
+                      type: object
+                      properties:
+                        '@type':
+                          type: object
+                          example: 'ids:Host'
+                        '@id':
+                          type: string
+                          example: 'http://industrialdataspace.org/host/73171c77-10d1-4e12-b04e-f696c467897e'
+                        'protocol':
+                          type: object
+                          properties:
+                            '@id':
+                              type: string
+                              example: "https://w3id.org/idsa/code/protocol/HTTP"
+                        'accessUrl': 
+                          type: object
+                          properties:
+                            '@id':
+                              type: string
+                              example: "http://companyA.com/ids/connector"
+                    'curator':
+                      type: object
+                      properties:
+                        '@id':
+                          type: string
+                          example: "http://companyB.com/ids/participant"
+                    'maintainer':
+                      type: object
+                      properties:
+                        '@id':
+                          type: string
+                          example: "http://companyA.com/ids/participant"
+                    'inboundModelVersion':
+                      $ref: "#/components/schemas/infomodelVersionArray"
+                    'outboundModelVersion':
+                      $ref: "#/components/schemas/infomodelVersion"
+                    'catalog':
+                      type: object
+                      properties:
+                        "@type":
+                          type: string
+                          example: "ids:Catalog"
+                        "@id":
+                          type: string
+                          example: "http://industrialdataspace.org/catalog/04b84cfd-b28c-4d22-b936-ee899900294a"
+                        'offer': 
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              "@type":
+                                type: string
+                                example: "ids:Resource"
+                              "@id":
+                                type: string
+                                example: "http://industrialdataspace.org/resource/2e8ceebd-43f8-41c9-8225-a763fe83931a"
+                              'title':
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    "@value":
+                                      type: string
+                                      example: "Quarterly Business Report"
+                                    "@language":
+                                      type: string
+                                      example: "en"
+                              'description':
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    "@value":
+                                      type: string
+                                      example: "Dataset without retrieval interface and further description"
+                                    "@language":
+                                      type: string
+                                      example: "en"
+            encoding:
+              header: 
+                headers:
+                  'application/json':
+                    description: "The Header section of the Mutlipart Message can be declared as either JSON or JSON-LD but must contain a valid IDS Message instance serialised in JSON-LD."
+                    schema:
+                      type: string
+                  'application/ld+json':
+                    description: "The Header section of the Mutlipart Message can be declared as either JSON or JSON-LD but must contain a valid IDS Message instance serialised in JSON-LD."
+                    schema:
+                      type: string
+              payload:
+                headers:
+                  'application/json':
+                    description: "The Payload section of the Mutlipart Message can be declared in any required mimetype."
+                    schema:
+                      type: string
+                  'application/ld+json':
+                    description: "The Payload section of the Mutlipart Message can be declared in any required mimetype."
+                    schema:
+                      type: string
+                  'application/octet-stream':
+                    description: "The Payload section of the Mutlipart Message can be declared in any required mimetype."
+                    schema:
+                      type: string
+                
+      responses:
+        '200':
+          description: The message was received and processed. Note that this only means that the HTTP interaction worked fine but higher-level errors (no content, wrong authentication, usage not permitted and so on) are announced in the Multipart response message. Note that the Multipart object below is only an example and does *not* represent the schema itself! Check the IDS Information Model for more information on valid IDS ResponseMessages.
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  header:                 
+                    type: object
+                    properties:
+                      '@context':
+                        type: string
+                        example: 'https://w3id.org/idsa/contexts/context.jsonld'
+                      '@type':
+                        type: string
+                        example: 'ids:RejectionMessage'
+                      '@id':
+                        type: string
+                        example: 'https://w3id.org/idsa/autogen/rejectionMessage/'
+                      modelVersion:
+                        $ref: '#/components/schemas/infomodelVersion'
+                      issued:
+                        $ref: '#/components/schemas/dateTimeStamp'
+                      issuerConnector:
+                        $ref: '#/components/schemas/URI'
+                      securityToken:
+                        type: object
+                        properties:
+                          '@type': 
+                            type: string
+                            example: 'ids:DynamicAttributeToken'
+                          tokenValue:
+                            type: string
+                            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJAY29udGV4dCI6Imh0dHBzOi8vdzNpZC5vcmcvaWRzYS9jb250ZXh0cy9jb250ZXh0Lmpzb25sZCIsImlkczpyZWZlcnJpbmdDb25uZWN0b3IiOnsiaWRzOnNlY3VyaXR5UHJvZmlsZSI6Imlkc2M6QkFTRV9TRUNVUklUWV9QUk9GSUxFIiwiaWRzOmV4dGVuZGVkR3VhcmFudGVlIjoiaWRzYzpVU0FHRV9DT05UUk9MX1BPTElDWV9FTkZPUkNFTUVOVCIsIkBpZCI6Imh0dHA6Ly9zb21lLWNvbm5lY3Rvci11cmkuY29tIiwiaWRzOnRyYW5zcG9ydENlcnRzU2hhMjU2IjpbImJhY2I4Nzk1NzU3MzBiYjA4M2YyODNmZDViNjdhOGNiODk2OTQ0ZDFiZTI4YzdiMzIxMTdjZmM3NTdjODFlOTYiXX0sInNjb3BlIjoiaWRzX2Nvbm5lY3Rvcl9hdHRyaWJ1dGVzIiwiYXVkIjoiaWRzX2Nvbm5lY3RvcnNfYWxsIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiJDPURFLE89RnJhdW5ob2ZlcixPVT1BSVNFQyxDTj1lZGM1ZDdiMy1hMzk4LTQ4ZjAtYWJiMC0zNzUxNTMwYzRmZWQiLCJuYmYiOjE1Njc3MDM1NjQsImV4cCI6MTU2NzcwNzE2NH0.hcJmxUC9gNkXevsLpOYHgRNstOLn_tyAAhv-2_CGr8g' 
+                          tokenFormat:
+                            type: object
+                            properties:
+                              '@id':
+                                type: string
+                                example: 'idsc:JWT'
+                      'rejectionReason':
+                        $ref: '#/components/schemas/RejectionCodes'
+                  payload:
+                    type: string
+                    example: "The attribute xx is wrong in the Request Message. Please correct your input."
+              encoding:
+                header:
+                  headers:
+                    'application/json':
+                      description: "The Header section of the Mutlipart Message can be declared as either JSON or JSON-LD but must contain a valid IDS Message instance serialised in JSON-LD."
+                      schema:
+                        type: string
+                    'application/ld+json':
+                      description: "The Header section of the Mutlipart Message can be declared as either JSON or JSON-LD but must contain a valid IDS Message instance serialised in JSON-LD."
+                      schema:
+                        type: string
+                payload:
+                  headers:
+                    'application/json':
+                      description: "The Header section of the Mutlipart Message can be declared as either JSON or JSON-LD but must contain a valid IDS Message instance serialised in JSON-LD."
+                      schema:
+                        type: string
+                    'application/ld+json':
+                      description: "The Header section of the Mutlipart Message can be declared as either JSON or JSON-LD but must contain a valid IDS Message instance serialised in JSON-LD."
+                      schema:
+                        type: string
+                    'text/plain':
+                      description: "The Payload section of the Mutlipart Message can be declared in any required mimetype."
+                      schema:
+                        type: string
+                    'application/octet-stream':
+                      description: "The Payload section of the Mutlipart Message can be declared in any required mimetype."
+                      schema:
+                        type: string
+  # /data:
+  #   post:
+  #     summary: Content-related interactions with the indexed data, mainly QueryMessage and DescriptionRequestMessage
+  #     tags: 
+  #     - Multipart Interactions
+  #     requestBody:
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             type: object
+  #             properties:
+  #               header:
+  #                 description: "The Multipart Header section contains the IDS Message instance."
+  #                 type: object
+  #                 properties:
+  #                   '@context':
+  #                     type: string
+  #                     example: 'https://w3id.org/idsa/contexts/context.jsonld'
+  #                   '@type':
+  #                     type: string
+  #                     example: 'ids:ArtifactRequestMessage'
+  #                   '@id':
+  #                     type: string
+  #                     example: 'http://industrialdataspace.org/ArtifactRequestMessage/34d761cf'
+  #                   modelVersion:
+  #                     $ref: '#/components/schemas/infomodelVersion'
+  #                   issued:
+  #                     $ref: '#/components/schemas/dateTimeStamp'
+  #                   issuerConnector:
+  #                     $ref: '#/components/schemas/URI'
+  #                   securityToken:
+  #                     type: object
+  #                     properties:
+  #                       '@type': 
+  #                         type: string
+  #                         example: 'ids:DynamicAttributeToken'
+  #                       tokenValue:
+  #                         type: string
+  #                         example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJAY29udGV4dCI6Imh0dHBzOi8vdzNpZC5vcmcvaWRzYS9jb250ZXh0cy9jb250ZXh0Lmpzb25sZCIsImlkczpyZWZlcnJpbmdDb25uZWN0b3IiOnsiaWRzOnNlY3VyaXR5UHJvZmlsZSI6Imlkc2M6QkFTRV9TRUNVUklUWV9QUk9GSUxFIiwiaWRzOmV4dGVuZGVkR3VhcmFudGVlIjoiaWRzYzpVU0FHRV9DT05UUk9MX1BPTElDWV9FTkZPUkNFTUVOVCIsIkBpZCI6Imh0dHA6Ly9zb21lLWNvbm5lY3Rvci11cmkuY29tIiwiaWRzOnRyYW5zcG9ydENlcnRzU2hhMjU2IjpbImJhY2I4Nzk1NzU3MzBiYjA4M2YyODNmZDViNjdhOGNiODk2OTQ0ZDFiZTI4YzdiMzIxMTdjZmM3NTdjODFlOTYiXX0sInNjb3BlIjoiaWRzX2Nvbm5lY3Rvcl9hdHRyaWJ1dGVzIiwiYXVkIjoiaWRzX2Nvbm5lY3RvcnNfYWxsIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiJDPURFLE89RnJhdW5ob2ZlcixPVT1BSVNFQyxDTj1lZGM1ZDdiMy1hMzk4LTQ4ZjAtYWJiMC0zNzUxNTMwYzRmZWQiLCJuYmYiOjE1Njc3MDM1NjQsImV4cCI6MTU2NzcwNzE2NH0.hcJmxUC9gNkXevsLpOYHgRNstOLn_tyAAhv-2_CGr8g' 
+  #                       tokenFormat:
+  #                         type: object
+  #                         properties:
+  #                           '@id':
+  #                             type: string
+  #                             example: 'idsc:JWT'
+  #                   requestedArtifact:
+  #                     $ref: '#/components/schemas/URI'
+  #               payload:
+  #                 type: object
+  #                 description: The Payload corresponding to the IDS Message defined in the Multipart Header section. Can be an IDS Object in RDF (JSON-LD), a query (e.g. SPARQL) or any other suitable data format.
+                  
+  #           encoding:
+  #             header: 
+  #               headers:
+  #                 'application/json':
+  #                   description: "The Header section of the Mutlipart Message can be declared as either JSON or JSON-LD but must contain a valid IDS Message instance serialised in JSON-LD."
+  #                   schema:
+  #                     type: string
+  #                 'application/ld+json':
+  #                   description: "The Header section of the Mutlipart Message can be declared as either JSON or JSON-LD but must contain a valid IDS Message instance serialised in JSON-LD."
+  #                   schema:
+  #                     type: string
+  #             payload:
+  #               headers:
+  #                 'application/json':
+  #                   description: "The Payload section of the Mutlipart Message can be declared in any required mimetype."
+  #                   schema:
+  #                     type: string
+  #                 'application/ld+json':
+  #                   description: "The Payload section of the Mutlipart Message can be declared in any required mimetype."
+  #                   schema:
+  #                     type: string
+  #                 'application/octet-stream':
+  #                   description: "The Payload section of the Mutlipart Message can be declared in any required mimetype."
+  #                   schema:
+  #                     type: string
+  #     responses:
+  #       '200':
+  #         description: The message was received and processed. Note that this only means that the HTTP interaction worked fine but higher-level errors (no content, wrong authentication, usage not permitted and so on) are announced in the Multipart response message.
+  #         content:
+  #           multipart/form-data:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 header:                 
+  #                   type: object
+  #                   properties:
+  #                     '@context':
+  #                       type: string
+  #                       example: 'https://w3id.org/idsa/contexts/context.jsonld'
+  #                     '@type':
+  #                       type: string
+  #                       example: 'ids:RejectionMessage'
+  #                     '@id':
+  #                       type: string
+  #                       example: 'https://w3id.org/idsa/autogen/rejectionMessage/'
+  #                     modelVersion:
+  #                       $ref: '#/components/schemas/infomodelVersion'
+  #                     issued:
+  #                       $ref: '#/components/schemas/dateTimeStamp'
+  #                     issuerConnector:
+  #                       $ref: '#/components/schemas/URI'
+  #                     securityToken:
+  #                       type: object
+  #                       properties:
+  #                         '@type': 
+  #                           type: string
+  #                           example: 'ids:DynamicAttributeToken'
+  #                         tokenValue:
+  #                           type: string
+  #                           example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJAY29udGV4dCI6Imh0dHBzOi8vdzNpZC5vcmcvaWRzYS9jb250ZXh0cy9jb250ZXh0Lmpzb25sZCIsImlkczpyZWZlcnJpbmdDb25uZWN0b3IiOnsiaWRzOnNlY3VyaXR5UHJvZmlsZSI6Imlkc2M6QkFTRV9TRUNVUklUWV9QUk9GSUxFIiwiaWRzOmV4dGVuZGVkR3VhcmFudGVlIjoiaWRzYzpVU0FHRV9DT05UUk9MX1BPTElDWV9FTkZPUkNFTUVOVCIsIkBpZCI6Imh0dHA6Ly9zb21lLWNvbm5lY3Rvci11cmkuY29tIiwiaWRzOnRyYW5zcG9ydENlcnRzU2hhMjU2IjpbImJhY2I4Nzk1NzU3MzBiYjA4M2YyODNmZDViNjdhOGNiODk2OTQ0ZDFiZTI4YzdiMzIxMTdjZmM3NTdjODFlOTYiXX0sInNjb3BlIjoiaWRzX2Nvbm5lY3Rvcl9hdHRyaWJ1dGVzIiwiYXVkIjoiaWRzX2Nvbm5lY3RvcnNfYWxsIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiJDPURFLE89RnJhdW5ob2ZlcixPVT1BSVNFQyxDTj1lZGM1ZDdiMy1hMzk4LTQ4ZjAtYWJiMC0zNzUxNTMwYzRmZWQiLCJuYmYiOjE1Njc3MDM1NjQsImV4cCI6MTU2NzcwNzE2NH0.hcJmxUC9gNkXevsLpOYHgRNstOLn_tyAAhv-2_CGr8g' 
+  #                         tokenFormat:
+  #                           type: object
+  #                           properties:
+  #                             '@id':
+  #                               type: string
+  #                               example: 'idsc:JWT'
+  #                     'rejectionReason':
+  #                       $ref: '#/components/schemas/RejectionCodes'
+  #                 payload:
+  #                   type: string
+  #                   example: "The attribute xx is wrong in the Request Message. Please correct your input."
+  #             encoding:
+  #               header:
+  #                 headers:
+  #                   'application/json':
+  #                     description: "The Header section of the Mutlipart Message can be declared as either JSON or JSON-LD but must contain a valid IDS Message instance serialised in JSON-LD."
+  #                     schema:
+  #                       type: string
+  #                   'application/ld+json':
+  #                     description: "The Header section of the Mutlipart Message can be declared as either JSON or JSON-LD but must contain a valid IDS Message instance serialised in JSON-LD."
+  #                     schema:
+  #                       type: string
+  #               payload:
+  #                 headers:
+  #                   'application/json':
+  #                     description: "The Header section of the Mutlipart Message can be declared as either JSON or JSON-LD but must contain a valid IDS Message instance serialised in JSON-LD."
+  #                     schema:
+  #                       type: string
+  #                   'application/ld+json':
+  #                     description: "The Header section of the Mutlipart Message can be declared as either JSON or JSON-LD but must contain a valid IDS Message instance serialised in JSON-LD."
+  #                     schema:
+  #                       type: string
+  #                   'text/plain':
+  #                     description: "The Payload section of the Mutlipart Message can be declared in any required mimetype."
+  #                     schema:
+  #                       type: string
+  #                   'application/octet-stream':
+  #                     description: "The Payload section of the Mutlipart Message can be declared in any required mimetype."
+  #                     schema:
+  #                       type: string
+
+  # /Catalog:
+  #   get:
+  #     summary: Read the Catalog
+  #     tags:
+  #     - Catalog
+  #     description: "Read the catalog of all registered IDS Resources."
+  #     parameters:
+  #       - in: header
+  #         name: ids-modelVersion
+  #         required: false
+  #         description: "Information Model version, against which the Message should be interpreted"
+  #         schema: 
+  #           $ref: '#/components/schemas/infomodelVersion'
+  #       - in: header
+  #         name: ids-issued
+  #         required: false
+  #         description: "Date of issuing the request."
+  #         schema:
+  #           $ref: '#/components/schemas/dateTimeStampValue'
+  #       - in: header
+  #         name: ids-correlationMessage
+  #         required: false
+  #         description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-related-message"
+  #       - in: header
+  #         name: ids-issuerConnector
+  #         required: true
+  #         description: "Origin Connector of the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-sending-connector/"
+  #       - in: header
+  #         name: ids-recipientConnector
+  #         required: false
+  #         description: "Target Connector, mainly used in broadcasting scenarios."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-target-connector/"
+  #       - in: header
+  #         name: ids-senderAgent
+  #         required: true
+  #         description: "foaf:Agent, which initiated the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-recipientAgent
+  #         required: true
+  #         description: "foaf:Agent, for which the message is intended."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-securityToken
+  #         required: true
+  #         description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #         schema: 
+  #           type: string
+  #         example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #       - in: header
+  #         name: ids-authorizationToken
+  #         required: false
+  #         description: "Authorization token as required by the target connector."
+  #         schema: 
+  #           type: string
+  #       - in: header
+  #         name: ids-transferContract
+  #         required: false
+  #         description: "Contract which is (or will be) the legal basis of the data transfer."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-suitable-contract/"
+  #       - in: header
+  #         name: ids-contentVersion
+  #         required: false
+  #         description: "Version of the content in the payload."
+  #         schema: 
+  #           type: string
+  #         example: "1.0.5"      
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+  #         content:
+  #           'application/json':
+  #             schema:
+  #               $ref: '#/components/schemas/CatalogLdp'
+  #           'application/ld+json':
+  #             schema:
+  #               $ref: '#/components/schemas/CatalogLdp'
+  #           'text/turtle':
+  #             schema:
+  #               type: string
+  #           'application/rdf+xml':
+  #             schema:
+  #               type: string
+  #           'application/ntriples':
+  #             schema:
+  #               type: string 
+  #       '403':
+  #         description: Forbidden. Access is not allowed for this user. Recheck your Dynamic Attribute Token (DAT) and all other required authentication patterns used.
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+    
+  #   head:
+  #     tags:
+  #     - Catalog
+  #     summary: Request the Headers 
+  #     parameters:
+  #       - in: header
+  #         name: ids-modelVersion
+  #         required: false
+  #         description: "Information Model version, against which the Message should be interpreted"
+  #         schema: 
+  #           $ref: '#/components/schemas/infomodelVersion'
+  #       - in: header
+  #         name: ids-issued
+  #         required: false
+  #         description: "Date of issuing the request."
+  #         schema:
+  #           $ref: '#/components/schemas/dateTimeStampValue'
+  #       - in: header
+  #         name: ids-correlationMessage
+  #         required: false
+  #         description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-related-message"
+  #       - in: header
+  #         name: ids-issuerConnector
+  #         required: true
+  #         description: "Origin Connector of the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-sending-connector/"
+  #       - in: header
+  #         name: ids-recipientConnector
+  #         required: false
+  #         description: "Target Connector, mainly used in broadcasting scenarios."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-target-connector/"
+  #       - in: header
+  #         name: ids-senderAgent
+  #         required: true
+  #         description: "foaf:Agent, which initiated the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-recipientAgent
+  #         required: true
+  #         description: "foaf:Agent, for which the message is intended."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-securityToken
+  #         required: true
+  #         description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #         schema: 
+  #           type: string
+  #         example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #       - in: header
+  #         name: ids-authorizationToken
+  #         required: false
+  #         description: "Authorization token as required by the target connector."
+  #         schema: 
+  #           type: string
+  #       - in: header
+  #         name: ids-transferContract
+  #         required: false
+  #         description: "Contract which is (or will be) the legal basis of the data transfer."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-suitable-contract/"
+  #       - in: header
+  #         name: ids-contentVersion
+  #         required: false
+  #         description: "Version of the content in the payload."
+  #         schema: 
+  #           type: string
+  #         example: "1.0.5"      
+
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+  #       '403':
+  #         description: Forbidden. Access is not allowed for this user. Recheck your Dynamic Attribute Token (DAT) and all other required authentication patterns used.
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+    
+  #   options:
+  #     summary: Read the allowed operations
+  #     description: Request the allowed operations on this IDS Catalog instance.
+  #     tags:
+  #     - Catalog
+  #     parameters:
+  #       - in: header
+  #         name: ids-modelVersion
+  #         required: false
+  #         description: "Information Model version, against which the Message should be interpreted"
+  #         schema: 
+  #           $ref: '#/components/schemas/infomodelVersion'
+  #       - in: header
+  #         name: ids-issued
+  #         required: false
+  #         description: "Date of issuing the request."
+  #         schema:
+  #           $ref: '#/components/schemas/dateTimeStampValue'
+  #       - in: header
+  #         name: ids-correlationMessage
+  #         required: false
+  #         description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-related-message"
+  #       - in: header
+  #         name: ids-issuerConnector
+  #         required: true
+  #         description: "Origin Connector of the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-sending-connector/"
+  #       - in: header
+  #         name: ids-recipientConnector
+  #         required: false
+  #         description: "Target Connector, mainly used in broadcasting scenarios."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-target-connector/"
+  #       - in: header
+  #         name: ids-senderAgent
+  #         required: true
+  #         description: "foaf:Agent, which initiated the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-recipientAgent
+  #         required: true
+  #         description: "foaf:Agent, for which the message is intended."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-securityToken
+  #         required: true
+  #         description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #         schema: 
+  #           type: string
+  #         example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #       - in: header
+  #         name: ids-authorizationToken
+  #         required: false
+  #         description: "Authorization token as required by the target connector."
+  #         schema: 
+  #           type: string
+  #       - in: header
+  #         name: ids-transferContract
+  #         required: false
+  #         description: "Contract which is (or will be) the legal basis of the data transfer."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-suitable-contract/"
+  #       - in: header
+  #         name: ids-contentVersion
+  #         required: false
+  #         description: "Version of the content in the payload."
+  #         schema: 
+  #           type: string
+  #         example: "1.0.5"      
+
+  #     responses:
+  #       '200':
+  #         description: Returns the allowed operations on this IDS Catalog instance.
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+  #       '403':
+  #         description: Forbidden. Access is not allowed for this user. Recheck your Dynamic Attribute Token (DAT) and all other required authentication patterns used.
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+              
+    
+  #   put:
+  #     tags:
+  #     - Catalog
+  #     summary: Update the Catalog
+  #     description: Overwrite the current catalog with a complete new one.      
+  #     parameters:
+  #       - in: header
+  #         name: ids-modelVersion
+  #         required: false
+  #         description: "Information Model version, against which the Message should be interpreted"
+  #         schema: 
+  #           $ref: '#/components/schemas/infomodelVersion'
+  #       - in: header
+  #         name: ids-issued
+  #         required: false
+  #         description: "Date of issuing the request."
+  #         schema:
+  #           $ref: '#/components/schemas/dateTimeStampValue'
+  #       - in: header
+  #         name: ids-correlationMessage
+  #         required: false
+  #         description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-related-message"
+  #       - in: header
+  #         name: ids-issuerConnector
+  #         required: true
+  #         description: "Origin Connector of the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-sending-connector/"
+  #       - in: header
+  #         name: ids-recipientConnector
+  #         required: false
+  #         description: "Target Connector, mainly used in broadcasting scenarios."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-target-connector/"
+  #       - in: header
+  #         name: ids-senderAgent
+  #         required: true
+  #         description: "foaf:Agent, which initiated the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-recipientAgent
+  #         required: true
+  #         description: "foaf:Agent, for which the message is intended."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-securityToken
+  #         required: true
+  #         description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #         schema: 
+  #           type: string
+  #         example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #       - in: header
+  #         name: ids-authorizationToken
+  #         required: false
+  #         description: "Authorization token as required by the target connector."
+  #         schema: 
+  #           type: string
+  #       - in: header
+  #         name: ids-transferContract
+  #         required: false
+  #         description: "Contract which is (or will be) the legal basis of the data transfer."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-suitable-contract/"
+  #       - in: header
+  #         name: ids-contentVersion
+  #         required: false
+  #         description: "Version of the content in the payload."
+  #         schema: 
+  #           type: string
+  #         example: "1.0.5"      
+  #       - in: header
+  #         name: If-Match
+  #         required: true
+  #         description: "Only perform the action if the client supplied entity matches the same entity on the server."
+  #         schema:
+  #           type: string
+  #           example: "123456789"
+  #     requestBody:
+  #       description: A complete IDS Catalog instance with all downstream resources.
+  #       required: true
+  #       content:
+  #         'application/json':
+  #           schema:
+  #             $ref: '#/components/schemas/Catalog'
+  #         'application/ld+json':
+  #           schema:
+  #             $ref: '#/components/schemas/Catalog'
+  #         'text/turtle':
+  #           schema:
+  #             type: string
+  #         'application/rdf+xml':
+  #           schema:
+  #             type: string
+  #         'application/ntriples':
+  #           schema:
+  #             type: string
+  #     responses:
+  #       '200':
+  #         description: successful
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+  #         content:
+  #           'application/json':
+  #             schema:
+  #               $ref: '#/components/schemas/CatalogLdp'
+  #           'application/ld+json':
+  #             schema:
+  #               $ref: '#/components/schemas/CatalogLdp'
+  #           'text/turtle':
+  #             schema:
+  #               type: string
+  #           'application/rdf+xml':
+  #             schema:
+  #               type: string
+  #           'application/ntriples':
+  #             schema:
+  #               type: string
+  #       '403':
+  #         description: Forbidden 
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+  #       '409':
+  #         description: Conflict
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+
+  #   patch:
+  #     tags:
+  #     - Catalog
+  #     summary: Update a Catalog entry
+  #     description: Update a sinlge instance of IDS Resource in the Catalog. In case the Resource is unknown to the Catalog, a new IDS Resource is added.
+  #     parameters:
+  #       - in: header
+  #         name: ids-modelVersion
+  #         required: false
+  #         description: "Information Model version, against which the Message should be interpreted"
+  #         schema: 
+  #           $ref: '#/components/schemas/infomodelVersion'
+  #       - in: header
+  #         name: ids-issued
+  #         required: false
+  #         description: "Date of issuing the request."
+  #         schema:
+  #           $ref: '#/components/schemas/dateTimeStampValue'
+  #       - in: header
+  #         name: ids-correlationMessage
+  #         required: false
+  #         description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-related-message"
+  #       - in: header
+  #         name: ids-issuerConnector
+  #         required: true
+  #         description: "Origin Connector of the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-sending-connector/"
+  #       - in: header
+  #         name: ids-recipientConnector
+  #         required: false
+  #         description: "Target Connector, mainly used in broadcasting scenarios."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-target-connector/"
+  #       - in: header
+  #         name: ids-senderAgent
+  #         required: true
+  #         description: "foaf:Agent, which initiated the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-recipientAgent
+  #         required: true
+  #         description: "foaf:Agent, for which the message is intended."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-securityToken
+  #         required: true
+  #         description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #         schema: 
+  #           type: string
+  #         example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #       - in: header
+  #         name: ids-authorizationToken
+  #         required: false
+  #         description: "Authorization token as required by the target connector."
+  #         schema: 
+  #           type: string
+  #       - in: header
+  #         name: ids-transferContract
+  #         required: false
+  #         description: "Contract which is (or will be) the legal basis of the data transfer."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-suitable-contract/"
+  #       - in: header
+  #         name: ids-contentVersion
+  #         required: false
+  #         description: "Version of the content in the payload."
+  #         schema: 
+  #           type: string
+  #         example: "1.0.5"   
+  #       - in: header
+  #         name: Slug
+  #         required: true
+  #         description: "The intended path name of the new resource."
+  #         schema: 
+  #           type: string
+  #         example: "new-resource"      
+  #     requestBody:
+  #       description: A single IDS Resource instance with all downstream resources.
+  #       required: true
+  #       content:
+  #         'application/json':
+  #           schema:
+  #             $ref: '#/components/schemas/ResourceJsonLd'
+  #         'application/ld+json':
+  #           schema:
+  #             $ref: '#/components/schemas/ResourceJsonLd'
+  #         'text/turtle':
+  #           schema:
+  #             type: string
+  #         'application/rdf+xml':
+  #           schema:
+  #             type: string
+  #         'application/ntriples':
+  #           schema:
+  #             type: string
+  #     responses:
+  #       '200':
+  #         description: successful
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+  #           Location:
+  #             description: "The URL of the newly created IDS Resoruce. The server has the authority over the naming, therefore the URL pattern can differ from the previously sent Slug value."
+  #             schema: 
+  #               type: string
+  #               example: "http://broker.org/Catalog/new-resource-1"
+  #         content:
+  #           'application/json':
+  #             schema:
+  #               $ref: '#/components/schemas/CatalogLdp'
+  #           'application/ld+json':
+  #             schema:
+  #               $ref: '#/components/schemas/CatalogLdp'
+  #           'text/turtle':
+  #             schema:
+  #               type: string
+  #           'application/rdf+xml':
+  #             schema:
+  #               type: string
+  #           'application/ntriples':
+  #             schema:
+  #               type: string
+  #       '403':
+  #         description: Forbidden 
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+  #       '409':
+  #         description: Conflict
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+    
+  #   post:
+  #     tags:
+  #     - Catalog
+  #     summary: Create a new Catalog entry
+  #     description: Add a sinlge instance of IDS Resource in the Catalog.
+  #     parameters:
+  #       - in: header
+  #         name: ids-modelVersion
+  #         required: false
+  #         description: "Information Model version, against which the Message should be interpreted"
+  #         schema: 
+  #           $ref: '#/components/schemas/infomodelVersion'
+  #       - in: header
+  #         name: ids-issued
+  #         required: false
+  #         description: "Date of issuing the request."
+  #         schema:
+  #           $ref: '#/components/schemas/dateTimeStampValue'
+  #       - in: header
+  #         name: ids-correlationMessage
+  #         required: false
+  #         description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-related-message"
+  #       - in: header
+  #         name: ids-issuerConnector
+  #         required: true
+  #         description: "Origin Connector of the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-sending-connector/"
+  #       - in: header
+  #         name: ids-recipientConnector
+  #         required: false
+  #         description: "Target Connector, mainly used in broadcasting scenarios."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-target-connector/"
+  #       - in: header
+  #         name: ids-senderAgent
+  #         required: true
+  #         description: "foaf:Agent, which initiated the message."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-recipientAgent
+  #         required: true
+  #         description: "foaf:Agent, for which the message is intended."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-participant/"
+  #       - in: header
+  #         name: ids-securityToken
+  #         required: true
+  #         description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #         schema: 
+  #           type: string
+  #         example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #       - in: header
+  #         name: ids-authorizationToken
+  #         required: false
+  #         description: "Authorization token as required by the target connector."
+  #         schema: 
+  #           type: string
+  #       - in: header
+  #         name: ids-transferContract
+  #         required: false
+  #         description: "Contract which is (or will be) the legal basis of the data transfer."
+  #         schema: 
+  #           $ref: '#/components/schemas/anyUri'
+  #         example: "http://example.org/some-suitable-contract/"
+  #       - in: header
+  #         name: ids-contentVersion
+  #         required: false
+  #         description: "Version of the content in the payload."
+  #         schema: 
+  #           type: string
+  #         example: "1.0.5"   
+  #       - in: header
+  #         name: Slug
+  #         required: true
+  #         description: "The intended path name of the new resource."
+  #         schema: 
+  #           type: string
+  #         example: "new-resource"      
+  #     requestBody:
+  #       description: A single IDS Resource instance with all downstream resources.
+  #       required: true
+  #       content:
+  #         'application/json':
+  #           schema:
+  #             $ref: '#/components/schemas/ResourceJsonLd'
+  #         'application/ld+json':
+  #           schema:
+  #             $ref: '#/components/schemas/ResourceJsonLd'
+  #         'text/turtle':
+  #           schema:
+  #             type: string
+  #         'application/rdf+xml':
+  #           schema:
+  #             type: string
+  #         'application/ntriples':
+  #           schema:
+  #             type: string
+  #     responses:
+  #       '201':
+  #         description: Created
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+  #           Location:
+  #             description: "The URL of the newly created IDS Resoruce. The server has the authority over the naming, therefore the URL pattern can differ from the previously sent Slug value."
+  #             schema: 
+  #               type: string
+  #               example: "http://broker.org/Catalog/new-resource-1"
+  #         content:
+  #           'application/json':
+  #             schema:
+  #               $ref: '#/components/schemas/CatalogLdp'
+  #           'application/ld+json':
+  #             schema:
+  #               $ref: '#/components/schemas/CatalogLdp'
+  #           'text/turtle':
+  #             schema:
+  #               type: string
+  #           'application/rdf+xml':
+  #             schema:
+  #               type: string
+  #           'application/ntriples':
+  #             schema:
+  #               type: string
+  #       '403':
+  #         description: Forbidden 
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+  #       '409':
+  #         description: Conflict
+  #         headers:
+  #           ids-modelVersion:
+  #             required: false
+  #             description: "Information Model version, against which the Message should be interpreted"
+  #             schema: 
+  #               $ref: '#/components/schemas/infomodelVersion'
+  #           ids-issued:
+  #             required: false
+  #             description: "Date of issuing the response."
+  #             schema:
+  #               $ref: '#/components/schemas/dateTimeStampValue'
+  #           ids-correlationMessage:
+  #             required: false
+  #             description: "Correlated message. Usually needed, if a messages responds to a previous message, A Connector may, e.g., send a MessageProcessedNotification as a response to an incoming message and therefore needs this property to refer to the incoming message.  "
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-issuerConnector:
+  #             required: false
+  #             description: "Origin Connector of the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientConnector:
+  #             required: false
+  #             description: "Target Connector, mainly used in broadcasting scenarios."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-senderAgent:
+  #             required: false
+  #             description: "foaf:Agent, which initiated the message."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-recipientAgent:
+  #             required: false
+  #             description: "foaf:Agent, for which the message is intended."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-securityToken:
+  #             required: true
+  #             description: "The IDS DAT: Token representing ids security claims, for instance that the sender supports a certain security profile. "
+  #             schema: 
+  #               type: string
+  #               example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRlZmF1bHQifQ.eyJzZWN1cml0eV9sZXZlbCI6Nywic2NvcGVzIjpbImlkc19jb25uZWN0b3IiLCJzZWN1cml0eV9sZXZlbCJdLCJhdWQiOiJJRFNfQ29ubmVjdG9yIiwiaXNzIjoiaHR0cHM6Ly9kYXBzLmFpc2VjLmZyYXVuaG9mZXIuZGUiLCJzdWIiOiI3MTgxMGZmZi00MTM5LTQ5ZDAtYjBhNC03ZDAyYjliNTRkMTUiLCJuYmYiOjE1NTk3MzAyNTAsImV4cCI6MTU1OTczMzg1MH0.oS5kZtFhqn1jUSBtmCKSU0MzcVAxhfW7BCa4oIo_aQi6Qcc-FN-bBhmx1fXgD57HqXaV7r0kxJrDsoDGo4AE1qG384HhSzFJOqA6Nws7n0OorkjsOIFMM4ulPYNKy2srUAb9EeDaAWb6uGA5bbk5E1yKM73ub_U8OF1W4OmgUCOFizxOPY8HEnklsk6eiqrAFFCebp-BtuaVp1p7U9SotpcFxoq235OwRWz2aFiAr9v53VLJzlBYPGsuqdBZ1lpOUQXCMbDfqWXfyNSa0uDPeHKP_Xj1tUug0g-WXjGsZIMzXHPvAM-syw1SweYq_c4ulpZyABSYPSwEfufdtaO_Iw"
+  #           ids-authorizationToken:
+  #             required: false
+  #             description: "Authorization token as required by the target connector."
+  #             schema: 
+  #               type: string
+  #           ids-transferContract:
+  #             required: false
+  #             description: "Contract which is (or will be) the legal basis of the data transfer."
+  #             schema: 
+  #               $ref: '#/components/schemas/anyUri'
+  #           ids-contentVersion:
+  #             required: false
+  #             description: "Version of the content in the payload."
+  #             schema: 
+  #               type: string
+  #               example: "1.0.5"
+  #           ETags:
+  #             required: true
+  #             description: "The current version of this LDP Resource."
+  #             schema: 
+  #               type: string
+  #               example : 'W/"123456789"'
+  #           Link:
+  #             description: A header indicating the support for LDP features.
+  #             schema:
+  #               type: string
+  #               example: '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type", <http://www.w3.org/ns/ldp#Resource>; rel="type"'
+  #           Allow:
+  #             description: "The list of allowed operations on this IDS Catalog instance."
+  #             schema: 
+  #               type: string
+  #               example: "GET, HEAD, OPTIONS, PUT, POST, PATCH"
+
+
+  # /Catalog/{resource-id}:
+  #   parameters:
+  #   - in: path
+  #     name: resource-id
+  #     description: "todo"
+  #     schema:
+  #       type: string
+  #     required: true
+  #   get:
+  #     tags:
+  #     - Resource
+  #     description: "todo"
+  #     responses:
+  #       '200':
+  #         description: "todo"
+  #   #options:
+    
+  #   #head:
+    
+  #   #put:
+    
+  #   #patch
+    
+  #   #post:
+    
+  #   #delete:
+    
+
+  # /Catalog/{resource-id}/{representation-id}:
+  #   parameters:
+  #   - in: path
+  #     name: resource-id
+  #     description: "todo"
+  #     schema:
+  #       type: string
+  #     required: true
+  #   - in: path
+  #     name: representation-id
+  #     description: "todo"
+  #     schema:
+  #       type: string
+  #     required: true
+  #   get:
+  #     tags:
+  #     - Representation
+  #     description: "todo"
+  #     responses:
+  #       '200':
+  #         description: "todo"
+  #   #options:
+    
+  #   #head:
+    
+  #   #put:
+    
+  #   #patch
+    
+  #   #post:
+    
+  #   #delete:    
+    
+
+  # /Catalog/{resource-id}/{contract-id}:
+  #   parameters:
+  #   - in: path
+  #     name: resource-id
+  #     description: "todo"
+  #     schema:
+  #       type: string
+  #     required: true
+  #   - in: path
+  #     name: contract-id
+  #     description: "todo"
+  #     schema:
+  #       type: string
+  #     required: true
+  #   get:
+  #     tags:
+  #     - Contracts
+  #     description: "todo"
+  #     responses:
+  #       '200':
+  #         description: "todo"
+  #   #options:
+    
+  #   #head:
+    
+  #   #put:
+    
+  #   #patch
+    
+  #   #post:
+    
+  #   #delete: 
+
+    
+  # /Catalog/{resource-id}/{representation-id}/{artifact-id}:
+  #   parameters:
+  #   - in: path
+  #     name: resource-id
+  #     description: "todo"
+  #     schema:
+  #       type: string
+  #     required: true
+  #   - in: path
+  #     name: representation-id
+  #     description: "todo"
+  #     schema:
+  #       type: string
+  #     required: true
+  #   - in: path
+  #     name: artifact-id
+  #     description: "todo"
+  #     schema:
+  #       type: string
+  #     required: true
+  #   get:
+  #     tags:
+  #     - Artifacts
+  #     description: "todo"
+  #     responses:
+  #       '200':
+  #         description: "todo"
+  #   #options:
+    
+  #   #head:
+    
+  #   #put:
+    
+  #   #patch
+    
+  #   #post:
+    
+  #   #delete:
+
+    
+  # /Catalog/{resource-id}/{representation-id}/{artifact-id}/{binary}:
+  #   parameters:
+  #   - in: path
+  #     name: resource-id
+  #     description: "todo"
+  #     schema:
+  #       type: string
+  #     required: true
+  #   - in: path
+  #     name: representation-id
+  #     description: "todo"
+  #     schema:
+  #       type: string
+  #     required: true
+  #   - in: path
+  #     name: artifact-id
+  #     description: "todo"
+  #     schema:
+  #       type: string
+  #     required: true
+  #   - in: path
+  #     name: binary
+  #     description: "todo"
+  #     schema:
+  #       type: string
+  #     required: true
+  #   get:
+  #     tags:
+  #     - Files
+  #     description: "todo"
+  #     responses:
+  #       '200':
+  #         description: "todo"
+  #   #options:
+    
+  #   #head:
+    
+  #   #put:
+    
+  #   #delete:  
+
+
+components:
+  schemas:
+    AppMetadata:
+      type: object
+      properties:
+        name: 
+          type: string
+          example: Example nginx
+        introduction: 
+          type: string
+          example: Short text introducing my nginx App
+        description:
+          type: string
+          example: <p>A long, <b>HTML</b> formatted description explaining how to use the App (like a user manual).</p>
+        keywords:
+          type: array
+          items: 
+            type: string
+          example: [ 'nginx', 'proxy' ]
+    AppArtifact:
+      type: object
+      properties: 
+        image:
+          type: string
+          example: library/nginx
+        ports:
+          type: array
+          items:
+            type: object
+            properties:
+              name: 
+                type: string
+                example: 'http'
+              port:
+                type: string
+                example: 80
+          example: [ { "name": "http", "port": 80} ]
+        settings:
+          type: array
+          items:
+            type: object
+            properties:
+              name: 
+                type: string
+                example: 'VAR1'
+              type:
+                type: string
+                example: "url"
+              required:
+                type: boolean
+                example: false
+          example: [ { "name": "VAR1", "type": "url", "required": false } ]
+        volumes:
+          type: array
+          items:
+            type: object
+            properties:
+              name: 
+                type: string
+                example: nginx-conf
+              mountPoint: 
+                type: string
+                example: /etc/nginx/conf
+          example: [ {"name": "nginx-conf", "mountPoint": "/etc/nginx/conf" } ]
+
+    dateTimeStamp:
+      type: object
+      properties:
+        '@value':
+          $ref: '#/components/schemas/dateTimeStampValue'
+        '@type':
+          type: string
+          example: "http://www.w3.org/2001/XMLSchema#dateTimeStamp"
+    dateTimeStampValue:
+      format: date-time
+      example: "2017-07-21T17:32:28Z"
+    anyUri:
+      type: string
+      format: uri
+      example: "http://example.org/some-valid-uri/"
+    infomodelVersion:
+      type: string
+      enum:
+      - "1.0.0"
+      - "1.0.1"
+      - "2.0.0"
+      - "2.0.1"
+      - "2.1.0"
+      - "3.0.0"
+      - "3.0.1"
+      example: "3.0.1"
+    infomodelVersionArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/infomodelVersion"
+      example: ["3.0.0", "3.0.1"]
+    RejectionCodes:
+      type: string
+      enum:
+      - "idsc:NOT_FOUND"
+      - "idsc:NOT_AUTHENTICATED"
+      - "idsc:NOT_AUTHORIZED"
+      - "idsc:TOO_MANY_RESULTS"
+      - "idsc:MALFORMED_MESSAGE"
+      - "idsc:INTERNAL_RECIPIENT_ERROR"
+      - "idsc:METHOD_NOT_SUPPORTED"
+      - "idsc:MESSAGE_TYPE_NOT_SUPPORTED"
+      - "idsc:VERSION_NOT_SUPPORTED"
+      - "idsc:BAD_PARAMETERS"
+      - "idsc:TEMPORARILY_NOT_AVAILABLE"
+      example: "idsc:MALFORMED_MESSAGE"   
+      
+    URI:
+      type: object
+      properties:
+        '@id':
+          type: string
+          example: "http://example.org/a-rdf-resource-uri/"
+      
+    BrokerJsonLd:
+      type: object
+      properties:
+        '@type':
+          type: string
+          example: "ids:Broker" 
+      allOf:
+      - $ref: '#/components/schemas/JsonLd'
+      - $ref: '#/components/schemas/Connector'
+
+    ConnectorJsonLd:
+      type: object
+      properties:
+        '@type':
+          type: string
+          example: "ids:Broker"
+      allOf:
+      - $ref: '#/components/schemas/JsonLd'
+      - $ref: '#/components/schemas/Connector'
+    
+    LdpContainerClass:
+      type: string
+      example: "ldp:BasicContainer"
+    
+    Connector:
+      type: object
+      properties:
+        'ids:description':
+          $ref: '#/components/schemas/PlainLiteral'
+        "ids:curator":
+          type: string
+          example: "https://www.iais.fraunhofer.de"
+        "ids:maintainer" : 
+          type: string
+          example: "https://www.iais.fraunhofer.de"
+        "ids:inboundModelVersion" :
+          $ref: '#/components/schemas/infomodelVersionArray'
+        "ids:outboundModelVersion" :
+          $ref: "#/components/schemas/infomodelVersion"
+        "ids:title" : 
+          $ref: '#/components/schemas/PlainLiteral'
+        'ids:catalog':
+          $ref: '#/components/schemas/Catalog'
+        'ldp:contains':
+          type: object
+          properties:
+            '@id':
+              type: string
+              example: "Catalog"
+        
+      allOf:
+      - $ref: '#/components/schemas/IdentifiedEntity'
+      
+    Catalog:
+      allOf:
+      - $ref: '#/components/schemas/IdentifiedEntity'
+      properties:
+        '@type':
+          type: array
+          items:
+            type: string
+          example: ["ids:Catalog", "ldp:BasicContainer"]
+        'ids:offer':
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+      
+    CatalogLdp:
+      allOf:
+      - $ref: '#/components/schemas/UnifiedContexts'
+      - $ref: '#/components/schemas/IdentifiedEntity'
+      properties:
+        '@type':
+          type: array
+          items:
+            type: string
+          example: ["ids:Catalog", "ldp:BasicContainer"]
+        'ids:offer':
+          type: array
+          items:
+            $ref: '#/components/schemas/URI'
+        'ldp:contains':
+          type: array
+          items:
+            $ref: '#/components/schemas/URI'
+    
+    ResourceJsonLd:
+      allOf:
+        - $ref: '#/components/schemas/UnifiedContexts'
+        - $ref: '#/components/schemas/Resource'
+    
+    Resource:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/IdentifiedEntity'
+      properties:
+        '@type':
+          type: array
+          items:
+            allOf:
+            - type: string
+              example: "ids:Resource"
+            - $ref: '#/components/schemas/LdpContainerClass'
+          example: ["ids:Resource", "ldp:BasicContainer"]
+        "ids:sample":
+          type: string
+          example: "same interesting example data of the resource."
+        "ids:resourcePart":
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+          example: [{"@id": "some-relative-URL"}]
+        "ids:description":
+          type: string
+          example: "This describes the resource."
+        "ids:title":
+          type: string
+          example: "A Title"
+        "ids:comment":
+          type: string
+          example: "A comment about this resource."
+        "ids:contentRefinement":
+          type: string
+        "ids:keyword":
+          type: array
+          items:
+            type: string
+            example: "keyword1"
+          example: ["keyword1","keyword2"]
+        "ids:temporalCoverage":
+          type: object
+          properties:
+            "ids:beginning":
+              $ref: "#/components/schemas/dateTimeStamp"
+            "ids:end":
+              $ref: "#/components/schemas/dateTimeStamp"
+        "ids:spatialCoverage":
+          $ref: '#/components/schemas/Resource'
+        "ids:theme":
+          $ref: '#/components/schemas/Resource'
+        "ids:language":
+          type: object
+          properties:
+            '@id':
+              type: string
+              example: "idsc:EN"
+        "ids:contractOffer":
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+          example: [{"@id": "some-relative-URL"}]
+        "ldp:contains":
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+          example: [{"@id": "some-relative-URL"}]
+        "ids:defaultRepresentation":
+          type: array
+          items:
+            $ref: '#/components/schemas/Representation'
+          example: [{"@id": "some-relative-URL"}]
+        "ids:representation":
+          type: array
+          items:
+            $ref: '#/components/schemas/Representation'
+          example: [{"@id": "some-relative-URL"}]
+    
+    Representation:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/IdentifiedEntity'
+      properties:
+        '@type':
+          type: string
+          example: "ids:Representation"
+        "ids:instance":
+          type: array
+          items:
+            $ref: '#/components/schemas/Artifact'    
+
+    Artifact:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/IdentifiedEntity'
+      properties:
+        '@type':
+          type: string
+          example: "ids:Artifact"
+        "ids:byteSize":
+          type: integer
+
+    ContractOffer:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/IdentifiedEntity'
+      properties:
+        '@type':
+          type: string
+          example: "ids:ContractOffer"
+
+    # Primitives
+    JsonLd:
+      type: object
+      properties: 
+        '@context':
+          type: string
+          example: 'http://w3id.org/idsa/contexts/context.json'
+
+    UnifiedContexts:
+      type: object
+      properties:
+        '@context':
+          type: object
+          properties:
+            'ids':
+              type: string
+              example: 'https://w3id.org/idsa/core/'
+            'idsc':
+              type: string
+              example: 'https://w3id.org/idsa/code/'
+            'ldp':
+              type: string
+              example: 'http://www.w3.org/ns/ldp#'
+
+    IdentifiedEntity:
+      type: object
+      properties:
+        '@id':
+          type: string
+          example: 'http://some-uri-unique-to-the-entity-described-by-this-JSON-LD'
+
+    PlainLiteral:
+      type: object
+      properties:
+        '@value': 
+          type: string
+          example: 'A text in a commonly known language'
+        '@language': 
+          type: string
+          example: 'en'

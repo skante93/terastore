@@ -1,0 +1,99 @@
+>>> REQUEST >>>
+	 === HEADER ===
+		{
+		    "@context": {
+		        "ids": "https://w3id.org/idsa/core/",
+		        "idsc": "https://w3id.org/idsa/code/"
+		    },
+		    "@type": "ids:AppUploadMessage",
+		    "@id": "https://demo-provider.tl.teralab-datascience.fr/appUploadMessage/1e242ea3-9659-4216-9de1-5e58b83c1722",
+		    "ids:senderAgent": {
+		        "@id": "https://w3id.org/idsa/autogen/baseConnector/7b934432-a85e-41c5-9f65-669219dde4ea"
+		    },
+		    "ids:issuerConnector": {
+		        "@id": "https://demo-provider.tl.teralab-datascience.fr"
+		    },
+		    "ids:issued": {
+		        "@value": "2021-02-25 11:18:05.880807",
+		        "@type": "http://www.w3.org/2001/XMLSchema#dateTimeStamp"
+		    },
+		    "ids:modelVersion": "4.0.0",
+		    "ids:securityToken": {
+		        "@type": "ids:DynamicAttributeToken",
+		        "@id": "https://w3id.org/idsa/autogen/dynamicAttributeToken/21b0ba17-dfb3-42f2-b7d0-ece4debfa4af",
+		        "ids:tokenValue": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJAY29udGV4dCI6Imh0dHBzOi8vamlyYS5pYWlzLmZyYXVuaG9mZXIuZGUvc3Rhc2gvcHJvamVjdHMvSUNUU0wvcmVwb3MvaWRzLWluZm9tb2RlbC1jb21tb25zL3Jhdy9qc29ubGQtY29udGV4dC8zLjAuMC9jb250ZXh0Lmpzb25sZCIsIkB0eXBlIjoiaWRzOkRhdFBheWxvYWQiLCJzdWIiOiI4MWViM2NkYS04OTFhLTQyOWUtOWQ2Yy03NzFhYWUzMWM2NzQiLCJhdWQiOiIiLCJzY29wZSI6Imlkc2M6aWRzX2Nvbm5lY3Rvcl9hdHRyaWJ1dGVzIiwicmVmZXJyaW5nQ29ubmVjdG9yIjoiIiwidHJhbnNwb3J0Q2VydHNTaGEyNTYiOiIiLCJzZWN1cml0eVByb2ZpbGUiOiJiYXNlIiwiZXh0ZW5kZWRHdWFyYW50ZWUiOiIiLCJpYXQiOjE2MTQyNTA3MTEsImV4cCI6MTYxNDMzNzExMX0.QmZgRns50-c3PDkvenG3m-IwPPBEn04LIr5x2PlHwko_cbmBBMKD0vyKVCm5uSBmNUTC6BezARpmjEwiBaDclAYBdg6C9p4i3pd_6aO3s4S75uUAhHUL1yQCcnQ7DwDkGtMFCSXw27wEF8KupCY-3FOlrVQ8QnJ9oBNqKSTErT2rkn5IDTjp-nlbFZSN3nFIrDESHMyG4Y7gvoPdbPRYNSagczHvY70O34lzn-QkI8SAQ7v8BJUfldK_fC3Mm1TRA6xUCpo__9XLjXLO7t4FDJpTqCp1_axiu3MXZAgzK9Y-mlkYqRVpkguqlp0C7hEgyVDUR9l-WI0BZ_ZGsukd9Q",
+		        "ids:tokenFormat": {
+		            "@id": "idsc:JWT"
+		        }
+		    },
+		    "ids:recipientConnector": [
+		        {
+		            "@id": "https://demo-provider.tl.teralab-datascience.fr"
+		        }
+		    ],
+		    "ids:affectedDataApp": "https://terastore.tl.teralab-datascience.fr/apps/6037876df8b2d3048c0cf5a1"
+		}
+	 === END HEADER ===
+
+	 === PAYLOAD ===
+		{
+		    "image": "nginx",
+		    "ports": [
+		        {
+		            "name": "http",
+		            "port": 80
+		        }
+		    ]
+		}
+	 === END PAYLOAD ===
+ 
+
+<<< RESPONSE <<<
+	 === HEADER ===
+		{
+		    "@context": {
+		        "ids": "https://w3id.org/idsa/core/",
+		        "idsc": "https://w3id.org/idsa/code/"
+		    },
+		    "@type": "ids:AppUploadResponseMessage",
+		    "@id": "https://demo-provider.tl.teralab-datascience.fr/appUploadMessage/1e242ea3-9659-4216-9de1-5e58b83c1722",
+		    "ids:senderAgent": {
+		        "@id": "https://w3id.org/idsa/autogen/baseConnector/7b934432-a85e-41c5-9f65-669219dde4ea"
+		    },
+		    "ids:issuerConnector": {
+		        "@id": "https://terastore.tl.teralab-datascience.fr"
+		    },
+		    "ids:issued": {
+		        "@value": "2021-02-25T11:18:06.104Z",
+		        "@type": "http://www.w3.org/2001/XMLSchema#dateTimeStamp"
+		    },
+		    "ids:modelVersion": "4.0.0",
+		    "ids:securityToken": {
+		        "@type": "ids:DynamicAttributeToken",
+		        "@id": "https://w3id.org/idsa/autogen/dynamicAttributeToken/21b0ba17-dfb3-42f2-b7d0-ece4debfa4af",
+		        "ids:tokenValue": "...",
+		        "ids:tokenFormat": {
+		            "@id": "idsc:JWT"
+		        }
+		    },
+		    "ids:recipientConnector": [
+		        {
+		            "@id": "https://demo-provider.tl.teralab-datascience.fr"
+		        }
+		    ]
+		}
+	 === END HEADER ===
+
+	 === PAYLOAD ===
+		{
+		    "ports": [
+		        {
+		            "_id": "6037876ef8b2d3048c0cf5a3",
+		            "name": "http"
+		        }
+		    ],
+		    "settings": [],
+		    "volumes": [],
+		    "image": "nginx"
+		}
+	 === END PAYLOAD ===

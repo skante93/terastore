@@ -1,0 +1,164 @@
+>>> REQUEST >>>
+	 === HEADER ===
+		{
+		    "@context": {
+		        "ids": "https://w3id.org/idsa/core/",
+		        "idsc": "https://w3id.org/idsa/code/"
+		    },
+		    "@type": "ids:DescriptionRequestMessage",
+		    "@id": "https://demo-consumer.tl.teralab-datascience.fr/descriptionRequestMessage/7b081a66-baaf-4839-9c85-8194507e8244",
+		    "ids:senderAgent": {
+		        "@id": "https://w3id.org/idsa/autogen/baseConnector/7b934432-a85e-41c5-9f65-669219dde4ea"
+		    },
+		    "ids:issuerConnector": {
+		        "@id": "https://demo-consumer.tl.teralab-datascience.fr"
+		    },
+		    "ids:issued": {
+		        "@value": "2021-02-25 12:12:59.058409",
+		        "@type": "http://www.w3.org/2001/XMLSchema#dateTimeStamp"
+		    },
+		    "ids:modelVersion": "4.0.0",
+		    "ids:securityToken": {
+		        "@type": "ids:DynamicAttributeToken",
+		        "@id": "https://w3id.org/idsa/autogen/dynamicAttributeToken/21b0ba17-dfb3-42f2-b7d0-ece4debfa4af",
+		        "ids:tokenValue": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJAY29udGV4dCI6Imh0dHBzOi8vamlyYS5pYWlzLmZyYXVuaG9mZXIuZGUvc3Rhc2gvcHJvamVjdHMvSUNUU0wvcmVwb3MvaWRzLWluZm9tb2RlbC1jb21tb25zL3Jhdy9qc29ubGQtY29udGV4dC8zLjAuMC9jb250ZXh0Lmpzb25sZCIsIkB0eXBlIjoiaWRzOkRhdFBheWxvYWQiLCJzdWIiOiI4MWViM2NkYS04OTFhLTQyOWUtOWQ2Yy03NzFhYWUzMWM2NzQiLCJhdWQiOiIiLCJzY29wZSI6Imlkc2M6aWRzX2Nvbm5lY3Rvcl9hdHRyaWJ1dGVzIiwicmVmZXJyaW5nQ29ubmVjdG9yIjoiIiwidHJhbnNwb3J0Q2VydHNTaGEyNTYiOiIiLCJzZWN1cml0eVByb2ZpbGUiOiJiYXNlIiwiZXh0ZW5kZWRHdWFyYW50ZWUiOiIiLCJpYXQiOjE2MTQyNTA3MTEsImV4cCI6MTYxNDMzNzExMX0.QmZgRns50-c3PDkvenG3m-IwPPBEn04LIr5x2PlHwko_cbmBBMKD0vyKVCm5uSBmNUTC6BezARpmjEwiBaDclAYBdg6C9p4i3pd_6aO3s4S75uUAhHUL1yQCcnQ7DwDkGtMFCSXw27wEF8KupCY-3FOlrVQ8QnJ9oBNqKSTErT2rkn5IDTjp-nlbFZSN3nFIrDESHMyG4Y7gvoPdbPRYNSagczHvY70O34lzn-QkI8SAQ7v8BJUfldK_fC3Mm1TRA6xUCpo__9XLjXLO7t4FDJpTqCp1_axiu3MXZAgzK9Y-mlkYqRVpkguqlp0C7hEgyVDUR9l-WI0BZ_ZGsukd9Q",
+		        "ids:tokenFormat": {
+		            "@id": "idsc:JWT"
+		        }
+		    },
+		    "ids:recipientConnector": [
+		        {
+		            "@id": "https://demo-consumer.tl.teralab-datascience.fr"
+		        }
+		    ]
+		}
+	 === END HEADER ===
+
+	 === PAYLOAD ===
+		- NO PAYLOAD -
+	 === END PAYLOAD ===
+ 
+
+<<< RESPONSE <<<
+	 === HEADER ===
+		{
+		    "@context": {
+		        "ids": "https://w3id.org/idsa/core/",
+		        "idsc": "https://w3id.org/idsa/code/"
+		    },
+		    "@type": "ids:DescriptionResponseMessage",
+		    "@id": "https://demo-consumer.tl.teralab-datascience.fr/descriptionRequestMessage/7b081a66-baaf-4839-9c85-8194507e8244",
+		    "ids:senderAgent": {
+		        "@id": "https://w3id.org/idsa/autogen/baseConnector/7b934432-a85e-41c5-9f65-669219dde4ea"
+		    },
+		    "ids:issuerConnector": {
+		        "@id": "https://terastore.tl.teralab-datascience.fr"
+		    },
+		    "ids:issued": {
+		        "@value": "2021-02-25T12:12:59.297Z",
+		        "@type": "http://www.w3.org/2001/XMLSchema#dateTimeStamp"
+		    },
+		    "ids:modelVersion": "4.0.0",
+		    "ids:securityToken": {
+		        "@type": "ids:DynamicAttributeToken",
+		        "@id": "https://w3id.org/idsa/autogen/dynamicAttributeToken/21b0ba17-dfb3-42f2-b7d0-ece4debfa4af",
+		        "ids:tokenValue": "...",
+		        "ids:tokenFormat": {
+		            "@id": "idsc:JWT"
+		        }
+		    },
+		    "ids:recipientConnector": [
+		        {
+		            "@id": "https://demo-consumer.tl.teralab-datascience.fr"
+		        }
+		    ]
+		}
+	 === END HEADER ===
+
+	 === PAYLOAD ===
+		{
+		    "@context": "http://w3id.org/idsa/contexts/context.json",
+		    "@id": "https://terastore.tl.teralab-datascience.fr",
+		    "ids:correlationMessage": "https://terastore.tl.teralab-datascience.fr",
+		    "@type": "ids:AppStore",
+		    "ids:description": {
+		        "@value": "An implementation effort by TeraLab",
+		        "@language": "en"
+		    },
+		    "ids:curator": "https://www.teralab-datascience.fr",
+		    "ids:maintainer": "https://www.teralab-datascience.fr",
+		    "ids:inboundModelVersion": [
+		        "4.0.0"
+		    ],
+		    "ids:outboundModelVersion": "4.0.0",
+		    "ids:title": {
+		        "@value": "TeraStore",
+		        "@language": "en"
+		    },
+		    "ldp:contains": {
+		        "@id": "Catalog"
+		    },
+		    "ids:catalog": {
+		        "@id": "https://terastore.tl.teralab-datascience.fr/catalog",
+		        "@type": [
+		            "ids:Catalog",
+		            "ldp:BasicContainer"
+		        ],
+		        "ids:offer": [
+		            {
+		                "@id": "https://terastore.tl.teralab-datascience.fr/apps/5fb633ea4f5aa7013ddae944",
+		                "@type": [
+		                    "ids:AppResource"
+		                ],
+		                "ids:description": "Test full description",
+		                "ids:title": "algorun",
+		                "ids:comment": "A simple SKLEARN \"box\" ready to run your python codes.",
+		                "ids:keywords": [
+		                    "from:marketplace"
+		                ],
+		                "ids:artifact": [
+		                    {
+		                        "@id": "https://terastore.tl.teralab-datascience.fr/apps/5fb633ea4f5aa7013ddae944"
+		                    }
+		                ]
+		            },
+		            {
+		                "@id": "https://terastore.tl.teralab-datascience.fr/apps/6021209f68a66200295c871e",
+		                "@type": [
+		                    "ids:AppResource"
+		                ],
+		                "ids:description": "<p>Full description&nbsp;</p>",
+		                "ids:title": "newApp",
+		                "ids:comment": "introduction to my new app",
+		                "ids:keywords": [
+		                    "from:marketplace"
+		                ],
+		                "ids:artifact": [
+		                    {
+		                        "@id": "https://terastore.tl.teralab-datascience.fr/apps/6021209f68a66200295c871e"
+		                    }
+		                ]
+		            },
+		            {
+		                "@id": "https://terastore.tl.teralab-datascience.fr/apps/60379368d55cff049773e7fe",
+		                "@type": [
+		                    "ids:AppResource"
+		                ],
+		                "ids:description": "<p>A long, <b>HTML</b> formatted description explaining how to use the App (like a user manual).</p>",
+		                "ids:title": "Echo test",
+		                "ids:comment": "Short text introducing my nginx App",
+		                "ids:keywords": [
+		                    "test",
+		                    "http-echo",
+		                    "web server"
+		                ],
+		                "ids:artifact": [
+		                    {
+		                        "@id": "https://terastore.tl.teralab-datascience.fr/apps/60379368d55cff049773e7fe"
+		                    }
+		                ]
+		            }
+		        ]
+		    }
+		}
+	 === END PAYLOAD ===

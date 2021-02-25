@@ -1,0 +1,42 @@
+
+version: "3"
+
+services:
+  
+  appstore:
+    #image: terastore_appstore
+    build: ./appstore
+    volumes:
+      - ./appstore:/root/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo
+
+  consumer:
+    #image: terastore_consumer
+    build: ./consumer
+    volumes:
+      - ./consumer/notebooks:/root/notebooks
+    ports:
+      - 8888:8888
+    depends_on: 
+      - appstore
+
+  # daps:
+  #   image: terastore_daps
+  #   build: ./daps
+  #   command: supervisor index.js
+  #   volumes:
+  #     - ./daps:/root/app
+  #   ports:
+  #     - 3001:3000
+
+  mongo:
+    image: mongo
+    volumes:
+      - db:/data/db
+
+volumes:
+  db: {}
+

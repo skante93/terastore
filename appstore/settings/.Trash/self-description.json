@@ -1,0 +1,83 @@
+{
+	"@context": "http://w3id.org/idsa/contexts/context.json",
+	"@id": "https://terastore.tl.teralab-datascience.fr",
+	"@type": "ids:AppStore",
+	"ids:description": {
+		"@value": "An implementation effort by TeraLab",
+		"@language": "en"
+	},
+	"ids:curator": "https://www.teralab-datascience.fr",
+	"ids:maintainer": "https://www.teralab-datascience.fr",
+	"ids:inboundModelVersion": [ "4.0.0" ],
+	"ids:outboundModelVersion": "4.0.0",
+	"ids:title": {
+		"@value": "TeraStore",
+		"@language": "en"
+	},
+	"ids:catalog": {
+		"@id": "https://terastore.tl.teralab-datascience.fr/catalog",
+		"@type": [
+		  "ids:Catalog",
+		  "ldp:BasicContainer"
+		],
+		"ids:offer": [
+			{
+			    "@id": "http://some-uri-unique-to-the-entity-described-by-this-JSON-LD",
+			    "@type": [
+					"ids:Resource",
+					"ldp:BasicContainer"
+			    ],
+			    "ids:sample": "same interesting example data of the resource.",
+				"ids:resourcePart": [
+					{
+						"@id": "some-relative-URL"
+					}
+				],
+			    "ids:description": "This describes the resource.",
+			    "ids:title": "A Title",
+			    "ids:comment": "A comment about this resource.",
+			    "ids:contentRefinement": "string",
+			    "ids:keyword": [
+					"keyword1",
+					"keyword2"
+			    ],
+				"ids:temporalCoverage": {
+					"ids:beginning": {
+						"@value": "2017-07-21T17:32:28Z",
+						"@type": "http://www.w3.org/2001/XMLSchema#dateTimeStamp"
+					},
+					"ids:end": {
+						"@value": "2017-07-21T17:32:28Z",
+						"@type": "http://www.w3.org/2001/XMLSchema#dateTimeStamp"
+					}
+				},
+			    "ids:language": {
+					"@id": "idsc:EN"
+			    },
+			    "ids:contractOffer": [
+					{
+						"@id": "some-relative-URL"
+					}
+			    ],
+			    "ldp:contains": [
+					{
+						"@id": "some-relative-URL"
+					}
+			    ],
+			    "ids:defaultRepresentation": [
+					{
+						"@id": "some-relative-URL"
+					}
+			    ],
+			    "ids:representation": [
+					{
+						"@id": "some-relative-URL"
+					}
+			    ]
+			}
+		]
+	},
+	"ldp:contains": {
+		"@id": "Catalog"
+	}
+}

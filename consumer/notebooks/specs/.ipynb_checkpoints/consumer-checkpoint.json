@@ -1,0 +1,26 @@
+{
+    "@type" : "ids:BaseConnector",
+    "@id" : "https://demo-consumer.tl.teralab-datascience.fr",
+    "ids:version" : "v3.0.0",
+    "ids:description" : [ 
+        {
+            "@value" : "An IDS App consumer connector within TeraStore demo",
+            "@type" : "http://www.w3.org/2001/XMLSchema#string"
+        } 
+    ],
+    "ids:securityProfile" : {
+      "@id" : "idsc:BASE_SECURITY_PROFILE"
+    },
+    "ids:maintainer" : {
+      "@id" : "https://teralab-datascience.fr"
+    },
+    "ids:curator" : {
+      "@id" : "https://teralab-datascience.fr"
+    },
+    "ids:title" : [ {
+      "@value" : "TeraStore Demo consumer Connector",
+      "@type" : "http://www.w3.org/2001/XMLSchema#string"
+    } ],
+    "ids:inboundModelVersion" : [ "4.0.0" ],
+    "ids:outboundModelVersion" : "4.0.0"
+}

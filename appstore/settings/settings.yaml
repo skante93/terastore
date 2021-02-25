@@ -1,0 +1,31 @@
+
+# App Store info
+
+id: https://terastore.tl.teralab-datascience.fr
+title: TeraStore
+description: An implementation effort by TeraLab
+curator: https://www.teralab-datascience.fr
+maintainer: https://www.teralab-datascience.fr
+
+# Marketplace configs
+
+marketplaceAPIURL: https://ws67-af-rh.tl.teralab-datascience.fr
+marketplaceAPIToken: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1Zjg4NzYzODVkNjM1MjAwMGVkZjg3NmMifQ.lU6rtxkERUB-4MKyR_mL37NrY31eVBOX-cZiU6PGWVk
+
+# DAPS info
+
+idsuuid: "81eb3cda-891a-429e-9d6c-771aae31c674"
+private_key_path: ./settings/certs/private_key.txt 
+public_cert_path: ./settings/certs/public_key.txt
+daps_scheme:     "http"
+daps_host:       "212.81.222.225"
+daps_port:       8084
+daps_token_path: "/token"
+daps_pem_path:   "/admin/download/root"
+daps_jwks_path:  "/daps/.well-known/jwks.json"
+
+jwt_sign_algorithm: "RS256"
+jwt_audience:       "https://www.internationaldataspaces.org/"
+
+
+#212.81.222.225:8084 / token / validate

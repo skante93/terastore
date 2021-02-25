@@ -1,0 +1,105 @@
+>>> REQUEST >>>
+	 === HEADER ===
+		{
+		    "@context": {
+		        "ids": "https://w3id.org/idsa/core/",
+		        "idsc": "https://w3id.org/idsa/code/"
+		    },
+		    "@type": "ids:AppRegistrationRequestMessage",
+		    "@id": "https://demo-provider.tl.teralab-datascience.fr/appRegistrationRequestMessage/f4a8f63f-91fd-4c7b-83f0-8283407537de",
+		    "ids:senderAgent": {
+		        "@id": "https://w3id.org/idsa/autogen/baseConnector/7b934432-a85e-41c5-9f65-669219dde4ea"
+		    },
+		    "ids:issuerConnector": {
+		        "@id": "https://demo-provider.tl.teralab-datascience.fr"
+		    },
+		    "ids:issued": {
+		        "@value": "2021-02-25 11:18:05.597234",
+		        "@type": "http://www.w3.org/2001/XMLSchema#dateTimeStamp"
+		    },
+		    "ids:modelVersion": "4.0.0",
+		    "ids:securityToken": {
+		        "@type": "ids:DynamicAttributeToken",
+		        "@id": "https://w3id.org/idsa/autogen/dynamicAttributeToken/21b0ba17-dfb3-42f2-b7d0-ece4debfa4af",
+		        "ids:tokenValue": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJAY29udGV4dCI6Imh0dHBzOi8vamlyYS5pYWlzLmZyYXVuaG9mZXIuZGUvc3Rhc2gvcHJvamVjdHMvSUNUU0wvcmVwb3MvaWRzLWluZm9tb2RlbC1jb21tb25zL3Jhdy9qc29ubGQtY29udGV4dC8zLjAuMC9jb250ZXh0Lmpzb25sZCIsIkB0eXBlIjoiaWRzOkRhdFBheWxvYWQiLCJzdWIiOiI4MWViM2NkYS04OTFhLTQyOWUtOWQ2Yy03NzFhYWUzMWM2NzQiLCJhdWQiOiIiLCJzY29wZSI6Imlkc2M6aWRzX2Nvbm5lY3Rvcl9hdHRyaWJ1dGVzIiwicmVmZXJyaW5nQ29ubmVjdG9yIjoiIiwidHJhbnNwb3J0Q2VydHNTaGEyNTYiOiIiLCJzZWN1cml0eVByb2ZpbGUiOiJiYXNlIiwiZXh0ZW5kZWRHdWFyYW50ZWUiOiIiLCJpYXQiOjE2MTQyNTA3MTEsImV4cCI6MTYxNDMzNzExMX0.QmZgRns50-c3PDkvenG3m-IwPPBEn04LIr5x2PlHwko_cbmBBMKD0vyKVCm5uSBmNUTC6BezARpmjEwiBaDclAYBdg6C9p4i3pd_6aO3s4S75uUAhHUL1yQCcnQ7DwDkGtMFCSXw27wEF8KupCY-3FOlrVQ8QnJ9oBNqKSTErT2rkn5IDTjp-nlbFZSN3nFIrDESHMyG4Y7gvoPdbPRYNSagczHvY70O34lzn-QkI8SAQ7v8BJUfldK_fC3Mm1TRA6xUCpo__9XLjXLO7t4FDJpTqCp1_axiu3MXZAgzK9Y-mlkYqRVpkguqlp0C7hEgyVDUR9l-WI0BZ_ZGsukd9Q",
+		        "ids:tokenFormat": {
+		            "@id": "idsc:JWT"
+		        }
+		    },
+		    "ids:recipientConnector": [
+		        {
+		            "@id": "https://demo-provider.tl.teralab-datascience.fr"
+		        }
+		    ]
+		}
+	 === END HEADER ===
+
+	 === PAYLOAD ===
+		{
+		    "name": "Example nginx",
+		    "keywords": [
+		        "nginx",
+		        "proxy"
+		    ],
+		    "introduction": "Simple App",
+		    "description": "<p>TeraStore example App.</p>"
+		}
+	 === END PAYLOAD ===
+ 
+
+<<< RESPONSE <<<
+	 === HEADER ===
+		{
+		    "@context": {
+		        "ids": "https://w3id.org/idsa/core/",
+		        "idsc": "https://w3id.org/idsa/code/"
+		    },
+		    "@type": "ids:AppRegistrationResponseMessage",
+		    "@id": "https://demo-provider.tl.teralab-datascience.fr/appRegistrationRequestMessage/f4a8f63f-91fd-4c7b-83f0-8283407537de",
+		    "ids:senderAgent": {
+		        "@id": "https://w3id.org/idsa/autogen/baseConnector/7b934432-a85e-41c5-9f65-669219dde4ea"
+		    },
+		    "ids:issuerConnector": {
+		        "@id": "https://terastore.tl.teralab-datascience.fr"
+		    },
+		    "ids:issued": {
+		        "@value": "2021-02-25T11:18:05.864Z",
+		        "@type": "http://www.w3.org/2001/XMLSchema#dateTimeStamp"
+		    },
+		    "ids:modelVersion": "4.0.0",
+		    "ids:securityToken": {
+		        "@type": "ids:DynamicAttributeToken",
+		        "@id": "https://w3id.org/idsa/autogen/dynamicAttributeToken/21b0ba17-dfb3-42f2-b7d0-ece4debfa4af",
+		        "ids:tokenValue": "...",
+		        "ids:tokenFormat": {
+		            "@id": "idsc:JWT"
+		        }
+		    },
+		    "ids:recipientConnector": [
+		        {
+		            "@id": "https://demo-provider.tl.teralab-datascience.fr"
+		        }
+		    ]
+		}
+	 === END HEADER ===
+
+	 === PAYLOAD ===
+		{
+		    "@id": "https://terastore.tl.teralab-datascience.fr/apps/6037876df8b2d3048c0cf5a1",
+		    "@type": [
+		        "ids:AppResource"
+		    ],
+		    "ids:description": "<p>TeraStore example App.</p>",
+		    "ids:title": "Example nginx",
+		    "ids:comment": "Simple App",
+		    "ids:keyword": [
+		        "nginx",
+		        "proxy"
+		    ],
+		    "ids:artifact": [
+		        {
+		            "@id": "https://terastore.tl.teralab-datascience.fr/apps/6037876df8b2d3048c0cf5a1"
+		        }
+		    ]
+		}
+	 === END PAYLOAD ===
