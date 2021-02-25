@@ -27,7 +27,7 @@ let reply = (header, payload, opts, res_payload) => {
 		"ids:securityToken" : {
 			"@type" : "ids:DynamicAttributeToken",
 			"@id" : "https://w3id.org/idsa/autogen/dynamicAttributeToken/21b0ba17-dfb3-42f2-b7d0-ece4debfa4af",
-			"ids:tokenValue" : "...",
+			"ids:tokenValue" : DAT,
 			"ids:tokenFormat" : {
 				"@id" : "idsc:JWT"
 			}
